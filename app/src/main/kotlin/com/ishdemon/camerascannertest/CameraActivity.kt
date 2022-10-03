@@ -18,11 +18,14 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import com.bumptech.glide.Glide
 import com.ishdemon.camerascannertest.databinding.ActivityCameraBinding
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicInteger
 
 class CameraActivity: AppCompatActivity() {
     private lateinit var viewBinding: ActivityCameraBinding
@@ -30,6 +33,7 @@ class CameraActivity: AppCompatActivity() {
     private var imageCapture: ImageCapture? = null
 
     private lateinit var cameraExecutor: ExecutorService
+    private var count:AtomicInteger = AtomicInteger(0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,10 +86,14 @@ class CameraActivity: AppCompatActivity() {
                     Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
                 }
 
-                override fun
-                        onImageSaved(output: ImageCapture.OutputFileResults){
+                override fun onImageSaved(output: ImageCapture.OutputFileResults){
                     val msg = "Photo capture succeeded: ${output.savedUri}"
                     Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                    Glide.with(this@CameraActivity).load(output.savedUri).into(viewBinding.imageView)
+                    viewBinding.textViewCount.apply {
+                        text = count.incrementAndGet().toString()
+                        isVisible = true
+                    }
                     Log.d(TAG, msg)
                 }
             }

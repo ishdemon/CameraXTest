@@ -47,4 +47,10 @@ class PhotosRepositoryImpl @Inject constructor(
             imagesDao.deleteImage(image)
         }
     }
+
+    override suspend fun updateAlbum(album: AlbumEntity) {
+        withContext(ioDispatcher) {
+            albumDao.updateAlbum(album)
+        }
+    }
 }

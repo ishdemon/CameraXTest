@@ -30,6 +30,7 @@ interface DataModule {
 object DatabaseModule {
 
     @Provides
+    @Singleton
     fun provideAppDatabase(@ApplicationContext context: Context) : AppDatabase {
         return AppDatabase.buildDatabase(context)
     }

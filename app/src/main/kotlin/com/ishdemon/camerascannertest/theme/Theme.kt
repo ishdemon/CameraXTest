@@ -40,7 +40,7 @@ fun CameraTestTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Compos
 
     MaterialTheme(
         colors = colors,
-        typography = Typography,
+        typography = AppFontTypography,
         shapes = Shapes,
         content = content
     )

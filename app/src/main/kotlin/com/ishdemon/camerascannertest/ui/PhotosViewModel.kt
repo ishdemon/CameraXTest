@@ -27,6 +27,10 @@ class PhotosViewModel @Inject constructor(
     private val _imagesState = MutableStateFlow<DataState<List<Image>>>(DataState.Empty)
     val imagesState = _imagesState.asStateFlow()
 
+    init {
+        getAlbums()
+    }
+
     fun getAlbums() {
         viewModelScope.launch {
             _albumState.emit(Loading)
@@ -36,10 +40,28 @@ class PhotosViewModel @Inject constructor(
         }
     }
 
-    fun getPhotosAsync(albumId: String) {
+    fun addImage(image: Image) {
+        viewModelScope.launch {
+            repository.addImage(image.toEntity())
+        }
+    }
+
+    fun addAlbum(album: Album) {
+        viewModelScope.launch {
+            repository.addAlbum(album.toEntity())
+        }
+    }
+
+    fun updateAlbum(album: Album) {
+        viewModelScope.launch {
+            repository.updateAlbum(album.toEntity())
+        }
+    }
+
+    fun getImages(albumId: String) {
         viewModelScope.launch {
             _imagesState.emit(Loading)
-            repository.getImages(albumId).collectLatest { entities ->
+            repository.getImages(albumId).collect { entities ->
                 _imagesState.update { Success(entities.map { it.toImage() }) }
             }
         }

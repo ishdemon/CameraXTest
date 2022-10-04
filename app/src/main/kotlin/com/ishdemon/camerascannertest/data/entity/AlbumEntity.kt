@@ -14,12 +14,16 @@ data class AlbumEntity(
     @ColumnInfo(name = "album_name")
     val album_name : String,
 
+    @ColumnInfo(name = "thumb_uri")
+    val thumbUri : String,
+
     @ColumnInfo(name = "count")
     val count: Int,
 ) {
     fun toAlbum() = Album(
         id = id,
         album_name = album_name,
+        thumbUri = thumbUri,
         count = count
     )
 }

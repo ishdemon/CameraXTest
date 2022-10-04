@@ -16,4 +16,6 @@ interface PhotosRepository {
     fun getImages(albumId: String): Flow<List<ImageEntity>>
 
     suspend fun deleteImage(image: ImageEntity)
+
+    suspend fun updateAlbum(album: AlbumEntity)
 }

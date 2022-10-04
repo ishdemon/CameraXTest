@@ -11,6 +11,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
@@ -21,10 +22,14 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
+import com.ishdemon.camerascannertest.data.domain.Album
+import com.ishdemon.camerascannertest.data.domain.Image
 import com.ishdemon.camerascannertest.databinding.ActivityCameraBinding
+import com.ishdemon.camerascannertest.ui.PhotosViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -32,12 +37,15 @@ import java.util.concurrent.atomic.AtomicInteger
 
 @AndroidEntryPoint
 class CameraActivity: AppCompatActivity() {
-    private lateinit var viewBinding: ActivityCameraBinding
 
+    private lateinit var viewBinding: ActivityCameraBinding
+    private val viewModel by viewModels<PhotosViewModel>()
     private var imageCapture: ImageCapture? = null
 
     private lateinit var cameraExecutor: ExecutorService
     private var count: AtomicInteger = AtomicInteger(0)
+    private lateinit var albumId: String
+    private var currentAlbum: Album? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +59,7 @@ class CameraActivity: AppCompatActivity() {
             ActivityCompat.requestPermissions(
                 this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
         }
-
+        albumId = "Album-${SimpleDateFormat(ALBUM_FORMAT, Locale.US).format(System.currentTimeMillis())}"
         // Set up the listeners for take photo and video capture buttons
         viewBinding.button.setOnClickListener { takePhoto() }
 
@@ -69,12 +77,12 @@ class CameraActivity: AppCompatActivity() {
             put(MediaStore.MediaColumns.DISPLAY_NAME, name)
             put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
             if(Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-                put(MediaStore.Images.Media.RELATIVE_PATH, IMAGES_PATH)
+                put(MediaStore.Images.Media.RELATIVE_PATH, "$IMAGES_PATH/$albumId")
             } else {
                 createFolderIfNotExist()
                 put(MediaStore.Images.Media.DATA, "${Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_PICTURES
-                )}/CameraScanner/$name .jpg")
+                )}/CameraScanner/$albumId/$name .jpg")
             }
         }
 
@@ -97,15 +105,41 @@ class CameraActivity: AppCompatActivity() {
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults){
                     val msg = "Photo capture succeeded: ${output.savedUri}"
-                    Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                     Glide.with(this@CameraActivity).load(output.savedUri).into(viewBinding.imageView)
                     viewBinding.textViewCount.apply {
                         text = count.incrementAndGet().toString()
                         isVisible = true
                     }
                     Log.d(TAG, msg)
+                    saveToDb(output,name)
                 }
             }
+        )
+    }
+
+
+    private fun saveToDb(output: ImageCapture.OutputFileResults, fileName: String) {
+        if(count.get() == 1){
+            currentAlbum = Album(
+                id = albumId,
+                album_name = albumId,
+                thumbUri = output.savedUri.toString(),
+                count = count.get()
+            ).also {
+                viewModel.addAlbum(it)
+            }
+        } else currentAlbum?.let {
+            viewModel.updateAlbum(it.copy(count = count.get()))
+        }
+
+        viewModel.addImage(
+            Image(
+                fileName = fileName,
+                album = albumId,
+                uri = output.savedUri.toString(),
+                timeStamp = Date().time
+            )
         )
     }
 
@@ -190,7 +224,7 @@ class CameraActivity: AppCompatActivity() {
         val file = File(
             Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES
-            ).toString() + "/" + "CameraScanner"
+            ).toString() + "/CameraScanner/$albumId"
         )
         if (!file.exists()) {
             if (!file.mkdir()) {
@@ -205,6 +239,7 @@ class CameraActivity: AppCompatActivity() {
         private val IMAGES_PATH = "${Environment.DIRECTORY_PICTURES}/CameraScanner"
         private const val TAG = "CameraXApp"
         private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
+        private const val ALBUM_FORMAT = "HHmmssSSS-yyyy-MM-dd"
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS =
             mutableListOf (

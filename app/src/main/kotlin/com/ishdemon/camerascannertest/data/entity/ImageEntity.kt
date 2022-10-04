@@ -11,7 +11,7 @@ data class ImageEntity(
     @PrimaryKey
     @NonNull @ColumnInfo(name = "file_name") val fileName: String,
     @NonNull @ColumnInfo(name = "album_id") val albumId: String,
-    @NonNull @ColumnInfo(name = "time_stamp") val timeStamp: String,
+    @NonNull @ColumnInfo(name = "time_stamp") val timeStamp: Long,
     @NonNull @ColumnInfo(name = "uri") val uri: String
 ){
 

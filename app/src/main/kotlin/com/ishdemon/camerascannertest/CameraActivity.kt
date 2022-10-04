@@ -22,6 +22,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.ishdemon.camerascannertest.databinding.ActivityCameraBinding
+import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -29,6 +30,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicInteger
 
+@AndroidEntryPoint
 class CameraActivity: AppCompatActivity() {
     private lateinit var viewBinding: ActivityCameraBinding
 

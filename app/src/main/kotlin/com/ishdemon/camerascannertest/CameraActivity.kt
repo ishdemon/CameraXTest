@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
@@ -21,6 +22,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.ishdemon.camerascannertest.databinding.ActivityCameraBinding
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.concurrent.ExecutorService
@@ -33,7 +35,7 @@ class CameraActivity: AppCompatActivity() {
     private var imageCapture: ImageCapture? = null
 
     private lateinit var cameraExecutor: ExecutorService
-    private var count:AtomicInteger = AtomicInteger(0)
+    private var count: AtomicInteger = AtomicInteger(0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,7 +67,12 @@ class CameraActivity: AppCompatActivity() {
             put(MediaStore.MediaColumns.DISPLAY_NAME, name)
             put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
             if(Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/CameraX-Image")
+                put(MediaStore.Images.Media.RELATIVE_PATH, IMAGES_PATH)
+            } else {
+                createFolderIfNotExist()
+                put(MediaStore.Images.Media.DATA, "${Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_PICTURES
+                )}/CameraScanner/$name .jpg")
             }
         }
 
@@ -98,6 +105,21 @@ class CameraActivity: AppCompatActivity() {
                 }
             }
         )
+    }
+
+    private fun getFiles() {
+        val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString() + "/CameraScanner"
+        Log.d("Files", "Path: $path")
+        val directory = File(path)
+        val files = directory.listFiles()
+        if (files != null) {
+            Log.d("Files", "Size: " + files.size)
+        }
+        if (files != null) {
+            for (i in files.indices) {
+                Log.d("Files", "FileName:" + files[i].name)
+            }
+        }
     }
 
     private fun startCamera() {
@@ -162,7 +184,23 @@ class CameraActivity: AppCompatActivity() {
         cameraExecutor.shutdown()
     }
 
+    private fun createFolderIfNotExist() {
+        val file = File(
+            Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES
+            ).toString() + "/" + "CameraScanner"
+        )
+        if (!file.exists()) {
+            if (!file.mkdir()) {
+                Log.d(TAG, "Folder Create -> Failure")
+            } else {
+                Log.d(TAG, "Folder Create -> Success")
+            }
+        }
+    }
+
     companion object {
+        private val IMAGES_PATH = "${Environment.DIRECTORY_PICTURES}/CameraScanner"
         private const val TAG = "CameraXApp"
         private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val REQUEST_CODE_PERMISSIONS = 10

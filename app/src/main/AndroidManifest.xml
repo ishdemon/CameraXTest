@@ -37,6 +37,7 @@
         <activity
             android:name=".CameraActivity"
             android:theme="@style/Theme.CameraScannerTest"/>
+        <activity android:name=".ui.PreviewActivity" />
     </application>
 
 

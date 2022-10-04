@@ -26,6 +26,7 @@ import com.ishdemon.camerascannertest.data.domain.Album
 import com.ishdemon.camerascannertest.data.domain.Image
 import com.ishdemon.camerascannertest.databinding.ActivityCameraBinding
 import com.ishdemon.camerascannertest.ui.PhotosViewModel
+import com.ishdemon.camerascannertest.ui.PreviewActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.text.SimpleDateFormat
@@ -62,6 +63,9 @@ class CameraActivity: AppCompatActivity() {
         albumId = "Album-${SimpleDateFormat(ALBUM_FORMAT, Locale.US).format(System.currentTimeMillis())}"
         // Set up the listeners for take photo and video capture buttons
         viewBinding.button.setOnClickListener { takePhoto() }
+        viewBinding.imageView.setOnClickListener {
+            PreviewActivity.launch(this,albumId)
+        }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
     }
@@ -125,7 +129,8 @@ class CameraActivity: AppCompatActivity() {
                 id = albumId,
                 album_name = albumId,
                 thumbUri = output.savedUri.toString(),
-                count = count.get()
+                count = count.get(),
+                album_date = getDateString()
             ).also {
                 viewModel.addAlbum(it)
             }
@@ -156,6 +161,10 @@ class CameraActivity: AppCompatActivity() {
                 Log.d("Files", "FileName:" + files[i].name)
             }
         }
+    }
+
+    private fun getDateString(): String {
+        return SimpleDateFormat("dd MMM yyyy").format(Date())
     }
 
     private fun startCamera() {

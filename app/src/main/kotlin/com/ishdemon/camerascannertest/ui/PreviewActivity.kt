@@ -23,13 +23,14 @@ class PreviewActivity: ComponentActivity() {
     }
 
     private fun getActivityParams(): String {
-        return intent.getStringExtra("albumId")?:""
+        return intent.getStringExtra(PARAM)?:""
     }
 
     companion object {
+        const val PARAM = "albumId"
         fun launch(activity: Activity, albumId:String, requestCode: Int = -1) = activity.startActivityForResult(
             Intent(activity, PreviewActivity::class.java).apply {
-               putExtra("albumId", albumId )
+               putExtra(PARAM, albumId )
             }, requestCode)
     }
 }

@@ -25,6 +25,7 @@ import com.ishdemon.camerascannertest.common.DataState.Success
 import com.ishdemon.camerascannertest.theme.CameraTestTheme
 import com.ishdemon.camerascannertest.ui.PhotosViewModel
 import com.ishdemon.camerascannertest.ui.components.CoilImage
+import com.ishdemon.camerascannertest.ui.components.FullScreenLoader
 import com.ishdemon.camerascannertest.ui.components.PagerIndicator
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -46,7 +47,11 @@ fun PreviewScreen(
             when(val state = fileState.value){
                 Empty -> {}
                 is Error -> {}
-                Loading -> {}
+                Loading -> {
+                    FullScreenLoader(
+                        modifier = Modifier.padding(it)
+                    )
+                }
                 is Success -> {
                     val pagerState = rememberPagerState(initialPage = index)
                     Box(modifier = modifier) {

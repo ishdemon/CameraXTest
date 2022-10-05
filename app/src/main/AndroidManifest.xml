@@ -35,9 +35,9 @@
         </activity>
 
         <activity
-            android:name=".CameraActivity"
+            android:name=".ui.CameraActivity"
             android:theme="@style/Theme.CameraScannerTest"/>
-        <activity android:name=".ui.PreviewActivity" />
+        <activity android:name=".ui.preview.PreviewActivity" />
     </application>
 
 

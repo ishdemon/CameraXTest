@@ -1,4 +1,4 @@
-package com.ishdemon.camerascannertest
+package com.ishdemon.camerascannertest.ui
 
 import android.Manifest
 import android.app.Activity
@@ -25,8 +25,8 @@ import com.bumptech.glide.Glide
 import com.ishdemon.camerascannertest.data.domain.Album
 import com.ishdemon.camerascannertest.data.domain.Image
 import com.ishdemon.camerascannertest.databinding.ActivityCameraBinding
-import com.ishdemon.camerascannertest.ui.PhotosViewModel
-import com.ishdemon.camerascannertest.ui.PreviewActivity
+import com.ishdemon.camerascannertest.ui.preview.PreviewActivity
+import com.ishdemon.camerascannertest.ui.viewmodel.PhotosViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.text.SimpleDateFormat
@@ -58,7 +58,8 @@ class CameraActivity: AppCompatActivity() {
             startCamera()
         } else {
             ActivityCompat.requestPermissions(
-                this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
+                this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
+            )
         }
         albumId = "Album-${SimpleDateFormat(ALBUM_FORMAT, Locale.US).format(System.currentTimeMillis())}"
         // Set up the listeners for take photo and video capture buttons

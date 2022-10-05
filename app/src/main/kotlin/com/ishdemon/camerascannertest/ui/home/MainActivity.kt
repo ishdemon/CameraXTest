@@ -1,4 +1,4 @@
-package com.ishdemon.camerascannertest
+package com.ishdemon.camerascannertest.ui.home
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

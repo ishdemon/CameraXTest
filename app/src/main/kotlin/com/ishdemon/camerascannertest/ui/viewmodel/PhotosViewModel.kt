@@ -1,4 +1,4 @@
-package com.ishdemon.camerascannertest.ui
+package com.ishdemon.camerascannertest.ui.viewmodel
 
 import android.os.Environment
 import android.util.Log

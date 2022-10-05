@@ -23,7 +23,7 @@ import com.ishdemon.camerascannertest.common.DataState.Error
 import com.ishdemon.camerascannertest.common.DataState.Loading
 import com.ishdemon.camerascannertest.common.DataState.Success
 import com.ishdemon.camerascannertest.theme.CameraTestTheme
-import com.ishdemon.camerascannertest.ui.PhotosViewModel
+import com.ishdemon.camerascannertest.ui.viewmodel.PhotosViewModel
 import com.ishdemon.camerascannertest.ui.components.CoilImage
 import com.ishdemon.camerascannertest.ui.components.FullScreenLoader
 import com.ishdemon.camerascannertest.ui.components.PagerIndicator

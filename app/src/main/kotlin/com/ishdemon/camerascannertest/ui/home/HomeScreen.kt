@@ -12,14 +12,12 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CameraEnhance
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.ishdemon.camerascannertest.CameraActivity.Companion
+import com.ishdemon.camerascannertest.ui.CameraActivity.Companion
 import com.ishdemon.camerascannertest.common.DataState.Empty
 import com.ishdemon.camerascannertest.common.DataState.Error
 import com.ishdemon.camerascannertest.common.DataState.Loading
@@ -28,6 +26,7 @@ import com.ishdemon.camerascannertest.common.getActivity
 import com.ishdemon.camerascannertest.ui.components.AppBottomBar
 import com.ishdemon.camerascannertest.ui.components.FullScreenLoader
 import com.ishdemon.camerascannertest.ui.home.AlbumGrid
+import com.ishdemon.camerascannertest.ui.viewmodel.PhotosViewModel
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable

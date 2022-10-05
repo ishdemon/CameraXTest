@@ -16,7 +16,7 @@ fun AlbumGrid(
     modifier: Modifier = Modifier,
     gridState: LazyGridState,
     albums: List<Album>,
-    onAlbumClicked: (Int) -> Unit
+    onAlbumClicked: (String) -> Unit
 ) {
         LazyVerticalGrid(
             modifier = modifier,

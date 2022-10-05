@@ -13,10 +13,6 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion
 import androidx.compose.ui.Modifier
@@ -36,9 +32,8 @@ fun AlbumListItem(
     modifier: Modifier = Modifier,
     index: Int,
     album: Album,
-    onAlbumClicked: (Int) -> Unit
+    onAlbumClicked: (String) -> Unit
 ) {
-    var isLoaded by rememberSaveable { mutableStateOf(false) }
     Card(
         shape = MaterialTheme.shapes.large,
         elevation = 4.dp,
@@ -46,7 +41,7 @@ fun AlbumListItem(
             .height(200.dp)
             .padding(all = 12.dp)
             .clickable {
-                onAlbumClicked(index)
+                onAlbumClicked(album.id)
             }
     ) {
         CoilImage(

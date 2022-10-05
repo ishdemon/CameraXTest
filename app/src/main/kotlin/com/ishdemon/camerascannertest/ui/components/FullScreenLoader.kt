@@ -14,7 +14,7 @@ import androidx.compose.ui.zIndex
 
 @Composable
 fun FullScreenLoader(
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier

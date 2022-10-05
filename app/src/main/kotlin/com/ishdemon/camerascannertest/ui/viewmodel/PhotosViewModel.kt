@@ -89,14 +89,14 @@ class PhotosViewModel @Inject constructor(
                 val directory = File(path)
                 val files = directory.listFiles()
                 _imageFolderState.emit(Success(files?.toList()?.reversed() ?: emptyList()))
-//                if (files != null) {
-//                    Log.d("Files", "Size: " + files.size)
-//                }
-//                if (files != null) {
-//                    for (i in files.indices) {
-//                        Log.d("Files", "FileName:" + files[i].name)
-//                    }
-//                }
+                if (files != null) {
+                    Log.d("Files", "Size: " + files.size)
+                }
+                if (files != null) {
+                    for (i in files.indices) {
+                        Log.d("Files", "FileName:" + files[i].name)
+                    }
+                }
             }
         }
     }

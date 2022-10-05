@@ -10,13 +10,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.ishdemon.camerascannertest.data.domain.Album
 import com.ishdemon.camerascannertest.ui.components.AlbumListItem
+import java.io.File
 
 @Composable
 fun ImageGrid(
     modifier: Modifier = Modifier,
     gridState: LazyGridState,
-    albums: List<Album>,
-    onAlbumClicked: (Int) -> Unit
+    images: List<File>,
+    onPhotoClicked: (Int) -> Unit
 ) {
         LazyVerticalGrid(
             modifier = modifier,
@@ -24,11 +25,11 @@ fun ImageGrid(
             columns = GridCells.Fixed(2),
             contentPadding = PaddingValues(8.dp)
         ) {
-            itemsIndexed(albums) { index, album ->
-                AlbumListItem(
+            itemsIndexed(images) { index, album ->
+                PhotoListItem(
                     index = index,
-                    album = album,
-                    onAlbumClicked = onAlbumClicked
+                    image = album,
+                    onPhotoClicked = onPhotoClicked
                 )
             }
         }

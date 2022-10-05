@@ -1,4 +1,4 @@
-package com.ishdemon.camerascannertest.ui
+package com.ishdemon.camerascannertest.ui.home
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.padding
@@ -16,25 +16,31 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.ishdemon.camerascannertest.ui.CameraActivity.Companion
 import com.ishdemon.camerascannertest.common.DataState.Empty
 import com.ishdemon.camerascannertest.common.DataState.Error
 import com.ishdemon.camerascannertest.common.DataState.Loading
 import com.ishdemon.camerascannertest.common.DataState.Success
 import com.ishdemon.camerascannertest.common.getActivity
+import com.ishdemon.camerascannertest.ui.CameraActivity.Companion
 import com.ishdemon.camerascannertest.ui.components.AppBottomBar
 import com.ishdemon.camerascannertest.ui.components.FullScreenLoader
-import com.ishdemon.camerascannertest.ui.home.AlbumGrid
+import com.ishdemon.camerascannertest.ui.destinations.DetailScreenDestination
 import com.ishdemon.camerascannertest.ui.viewmodel.PhotosViewModel
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@RootNavGraph(start = true)
+@Destination
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: PhotosViewModel,
+    navigator: DestinationsNavigator
 ) {
     val context = LocalContext.current
-    val viewModel: PhotosViewModel = viewModel()
+    //val viewModel: PhotosViewModel = viewModel()
     val albumState = viewModel.albumState.collectAsState()
     val scrollState = rememberLazyGridState()
 
@@ -76,8 +82,8 @@ fun HomeScreen(
                     modifier = modifier
                         .padding(paddingValues = it),
                     albums = state.data,
-                    onAlbumClicked = { index ->
-                        //navigator.navigate(DetailsScreenDestination(index))
+                    onAlbumClicked = { albumId ->
+                        navigator.navigate(DetailScreenDestination(albumId))
                     }
                 )
             }

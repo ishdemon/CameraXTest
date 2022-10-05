@@ -17,7 +17,6 @@ import java.io.File
 fun CoilImage(
     modifier: Modifier = Modifier,
     imageUrI: Uri,
-    placeholder: Int = R.drawable.ic_baseline_broken_image_24,
     contentDescription: String = "",
     contentScale: ContentScale = ContentScale.Crop
 ) {
@@ -25,7 +24,6 @@ fun CoilImage(
         model = ImageRequest.Builder(LocalContext.current)
             .data(imageUrI)
             .crossfade(true)
-            .placeholder(placeholder)
             .build(),
         contentDescription = contentDescription,
         contentScale = contentScale,
@@ -38,7 +36,7 @@ fun CoilImage(
 fun CoilImage(
     modifier: Modifier = Modifier,
     file: File,
-    placeholder: Int = R.drawable.ic_baseline_broken_image_24,
+    loadState: ((Boolean) -> Unit)? = null,
     contentDescription: String = "",
     contentScale: ContentScale = ContentScale.Crop
 ) {
@@ -46,10 +44,14 @@ fun CoilImage(
         model = ImageRequest.Builder(LocalContext.current)
             .data(file)
             .crossfade(true)
-            .placeholder(placeholder)
             .build(),
         contentDescription = contentDescription,
         contentScale = contentScale,
-        modifier = modifier
+        modifier = modifier,
+        onSuccess = {
+            if (loadState != null) {
+                loadState(true)
+            }
+        }
     )
 }

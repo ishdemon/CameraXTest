@@ -18,6 +18,7 @@ import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import com.ishdemon.camerascannertest.common.DataState
 import com.ishdemon.camerascannertest.common.DataState.Empty
 import com.ishdemon.camerascannertest.common.DataState.Error
 import com.ishdemon.camerascannertest.common.DataState.Loading
@@ -27,63 +28,53 @@ import com.ishdemon.camerascannertest.ui.viewmodel.PhotosViewModel
 import com.ishdemon.camerascannertest.ui.components.CoilImage
 import com.ishdemon.camerascannertest.ui.components.FullScreenLoader
 import com.ishdemon.camerascannertest.ui.components.PagerIndicator
+import com.ramcosta.composedestinations.annotation.Destination
+import kotlinx.serialization.Serializable
+import java.io.File
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @OptIn(ExperimentalPagerApi::class, ExperimentalCoilApi::class)
+@Destination
 @Composable
 fun PreviewScreen(
     modifier: Modifier = Modifier,
-    albumId: String,
+    viewModel: PhotosViewModel,
+    files: @Serializable ArrayList<File>,
     index: Int = 0,
 ) {
-    val viewModel: PhotosViewModel = viewModel()
-    val fileState = viewModel.imagesFolderState.collectAsState()
+
     CameraTestTheme {
-        LaunchedEffect(key1 = Unit) {
-            viewModel.readFilesFromAlbum(albumId)
-        }
 
         Scaffold {
-            when(val state = fileState.value){
-                Empty -> {}
-                is Error -> {}
-                Loading -> {
-                    FullScreenLoader(
-                        modifier = Modifier.padding(it)
-                    )
-                }
-                is Success -> {
-                    val pagerState = rememberPagerState(initialPage = index)
-                    Box(modifier = modifier) {
-                        Column(
-                            Modifier
-                                .fillMaxSize()
-                                .padding(it)
-                        ) {
-                            HorizontalPager(
-                                count = state.data.size,
-                                state = pagerState,
-                                // Add 32.dp horizontal padding to 'center' the pages
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .fillMaxWidth(),
-                            ) { page ->
+            val pagerState = rememberPagerState(initialPage = index)
+            Box(modifier = modifier) {
+                Column(
+                    Modifier
+                        .fillMaxSize()
+                        .padding(it)
+                ) {
+                    HorizontalPager(
+                        count = files.size,
+                        state = pagerState,
+                        // Add 32.dp horizontal padding to 'center' the pages
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth(),
+                    ) { page ->
 
-                                CoilImage(
-                                    modifier = Modifier.fillMaxSize(),
-                                    file = state.data[page]
-                                )
-                            }
-                        }
-                        PagerIndicator(
-                            modifier = Modifier.align(Alignment.TopCenter),
-                            indicatorCount = 5,
-                            indicatorSize = 8.dp,
-                            space = 4.dp,
-                            pagerState = pagerState
+                        CoilImage(
+                            modifier = Modifier.fillMaxSize(),
+                            file = files[page]
                         )
                     }
                 }
+                PagerIndicator(
+                    modifier = Modifier.align(Alignment.TopCenter),
+                    indicatorCount = files.size,
+                    indicatorSize = 8.dp,
+                    space = 4.dp,
+                    pagerState = pagerState
+                )
             }
         }
     }

@@ -65,7 +65,8 @@ class CameraActivity: AppCompatActivity() {
         // Set up the listeners for take photo and video capture buttons
         viewBinding.button.setOnClickListener { takePhoto() }
         viewBinding.imageView.setOnClickListener {
-            PreviewActivity.launch(this,albumId)
+            if(count.get() > 0)
+                PreviewActivity.launch(this,albumId)
         }
 
         cameraExecutor = Executors.newSingleThreadExecutor()

@@ -1,6 +1,9 @@
 package com.ishdemon.camerascannertest.ui.home
 
+import android.Manifest
+import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -11,6 +14,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.ishdemon.camerascannertest.theme.CameraTestTheme
+import com.ishdemon.camerascannertest.ui.CameraActivity
+import com.ishdemon.camerascannertest.ui.CameraActivity.Companion
 import com.ishdemon.camerascannertest.ui.NavGraphs
 import com.ishdemon.camerascannertest.ui.viewmodel.PhotosViewModel
 import com.ramcosta.composedestinations.DestinationsNavHost

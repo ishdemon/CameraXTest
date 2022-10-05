@@ -149,21 +149,6 @@ class CameraActivity: AppCompatActivity() {
         )
     }
 
-    private fun getFiles() {
-        val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString() + "/CameraScanner"
-        Log.d("Files", "Path: $path")
-        val directory = File(path)
-        val files = directory.listFiles()
-        if (files != null) {
-            Log.d("Files", "Size: " + files.size)
-        }
-        if (files != null) {
-            for (i in files.indices) {
-                Log.d("Files", "FileName:" + files[i].name)
-            }
-        }
-    }
-
     private fun getDateString(): String {
         return SimpleDateFormat("dd MMM yyyy").format(Date())
     }

@@ -9,7 +9,7 @@ import com.ishdemon.camerascannertest.common.DataState.Loading
 import com.ishdemon.camerascannertest.common.DataState.Success
 import com.ishdemon.camerascannertest.data.domain.Album
 import com.ishdemon.camerascannertest.data.domain.Image
-import com.ishdemon.camerascannertest.data.repository.PhotosRepositoryImpl
+import com.ishdemon.camerascannertest.data.repository.PhotosRepository
 import com.ishdemon.camerascannertest.di.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -24,7 +24,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PhotosViewModel @Inject constructor(
-    private val repository: PhotosRepositoryImpl,
+    private val repository: PhotosRepository,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ): ViewModel() {
 

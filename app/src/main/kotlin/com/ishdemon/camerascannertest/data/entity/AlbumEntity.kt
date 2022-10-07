@@ -4,6 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.ishdemon.camerascannertest.data.domain.Album
+import java.text.SimpleDateFormat
+import java.util.Date
 
 @Entity(tableName = "albums")
 data class AlbumEntity(
@@ -26,7 +28,7 @@ data class AlbumEntity(
     fun toAlbum() = Album(
         id = id,
         album_name = album_name,
-        album_date = album_date,
+        album_date = SimpleDateFormat("dd MMM yyyy").format(Date.parse(album_date)),
         thumbUri = thumbUri,
         count = count
     )

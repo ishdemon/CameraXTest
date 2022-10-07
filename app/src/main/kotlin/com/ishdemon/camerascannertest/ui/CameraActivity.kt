@@ -151,7 +151,7 @@ class CameraActivity: AppCompatActivity() {
     }
 
     private fun getDateString(): String {
-        return SimpleDateFormat("dd MMM yyyy").format(Date())
+        return Date().toString()
     }
 
     private fun startCamera() {
